@@ -1,5 +1,5 @@
 module.exports = grammar({
-  name: 'Monkey',
+  name: 'monkey',
 
   rules: {
     // TODO: add the actual grammar rules

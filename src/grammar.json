@@ -1,5 +1,5 @@
 {
-  "name": "Monkey",
+  "name": "monkey",
   "rules": {
     "source_file": {
       "type": "REPEAT",
