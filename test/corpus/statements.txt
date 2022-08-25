@@ -1,0 +1,301 @@
+=======
+literals and identifiers
+=======
+
+1;
+-1;
+true;
+false;
+foo;
+-foo;
+
+---
+
+(source_file
+  (integer)
+  (unary_operator
+      (integer))
+  (boolean)
+  (boolean)
+  (identifier)
+  (unary_operator
+    (identifier)))
+
+===============
+infix operators
+===============
+
+a + b;
+1 + 1
+1 + b;
+a + 1
+a - b;
+1 - 1
+1 - b;
+a - 1
+a / b;
+1 / 1
+1 / b;
+a / 1
+a * b;
+1 * 1
+1 * b;
+a * 1
+
+a > b;
+1 < 1
+1 == b;
+a != 1
+
+---
+
+
+(source_file
+  (binary_operator
+    (identifier)
+    (identifier))
+  (binary_operator
+    (integer)
+    (integer))
+  (binary_operator
+    (integer)
+    (identifier))
+  (binary_operator
+    (identifier)
+    (integer))
+  (binary_operator
+    (identifier)
+    (identifier))
+  (binary_operator
+    (integer)
+    (integer))
+  (binary_operator
+    (integer)
+    (identifier))
+  (binary_operator
+    (identifier)
+    (integer))
+  (binary_operator
+    (identifier)
+    (identifier))
+  (binary_operator
+    (integer)
+    (integer))
+  (binary_operator
+    (integer)
+    (identifier))
+  (binary_operator
+    (identifier)
+    (integer))
+  (binary_operator
+    (identifier)
+    (identifier))
+  (binary_operator
+    (integer)
+    (integer))
+  (binary_operator
+    (integer)
+    (identifier))
+  (binary_operator
+    (identifier)
+    (integer))
+  (binary_operator
+    (identifier)
+    (identifier))
+  (binary_operator
+    (integer)
+    (integer))
+  (binary_operator
+    (integer)
+    (identifier))
+  (binary_operator
+    (identifier)
+    (integer)))
+
+
+===================
+function definition
+===================
+
+fn() { x; };
+fn(x) {
+  x;
+};
+
+fn(x, y, z) {
+  fn() {
+    x;
+  };
+};
+
+---
+
+(source_file
+  (function
+    (parameter_list)
+    (function_body
+      (identifier)))
+  (function
+    (parameter_list
+      (identifier))
+    (function_body
+      (identifier)))
+  (function
+    (parameter_list
+      (identifier)
+      (identifier)
+      (identifier))
+    (function_body
+      (function
+        (parameter_list)
+        (function_body
+          (identifier))))))
+
+=================
+return statements
+=================
+
+return 10;
+
+---
+
+(source_file
+  (return_statement
+    (integer)))
+
+==============
+let statements
+==============
+
+let foo = 10;
+
+let adder = fn(a) {
+  fn (b) {
+    a + b;
+  };
+};
+
+---
+
+(source_file
+  (let_statement
+    (identifier)
+    (integer))
+  (let_statement
+    (identifier)
+    (function
+     (parameter_list
+       (identifier))
+     (function_body
+       (function
+         (parameter_list
+           (identifier))
+         (function_body
+           (binary_operator
+             (identifier)
+             (identifier))))))))
+
+==============
+if expressions
+==============
+
+if (true) {
+  bar;
+}
+
+if (x > 100) {
+  bar;
+}
+
+if (true) {
+  bar;
+} else {
+  foo;
+}
+
+---
+
+(source_file
+  (if_expression
+    (condition
+      (boolean))
+    (consequence
+      (identifier)))
+  (if_expression
+    (condition
+      (binary_operator
+        (identifier)
+        (integer)))
+    (consequence
+      (identifier)))
+  (if_expression
+    (condition
+      (boolean))
+    (consequence
+      (identifier))
+    (alternative
+      (identifier))))
+
+=============
+function call
+=============
+
+foo(x, y, z)
+
+---
+
+(source_file
+  (call
+    (identifier)
+    (argument_list
+      (identifier)
+      (identifier)
+      (identifier))))
+
+
+====================================
+complex let statement, function call
+====================================
+
+let bar = foo(1 + 1, bar);
+
+---
+
+(source_file
+  (let_statement
+    (identifier)
+    (call
+      (identifier)
+      (argument_list
+        (binary_operator
+          (integer)
+          (integer))
+        (identifier)))))
+
+===========================================================
+complex let statement, function call, with function literal
+===========================================================
+
+let bar = foo(1 + 1, bar, fn(x) {
+  x + 1;
+});
+
+---
+
+(source_file
+  (let_statement
+    (identifier)
+    (call
+      (identifier)
+      (argument_list
+        (binary_operator
+          (integer)
+          (integer))
+        (identifier)
+        (function
+          (parameter_list
+            (identifier))
+          (function_body
+            (binary_operator
+              (identifier)
+              (integer))))))))
