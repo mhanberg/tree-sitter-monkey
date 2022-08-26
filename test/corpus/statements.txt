@@ -1,3 +1,14 @@
+======
+string
+======
+
+"foobar!?"
+
+---
+(source_file
+  (string))
+
+
 =======
 literals and identifiers
 =======
@@ -8,6 +19,8 @@ true;
 false;
 foo;
 -foo;
+"foobar"
+[foo, 1, "bar"]
 
 ---
 
@@ -19,7 +32,12 @@ foo;
   (boolean)
   (identifier)
   (unary_operator
-    (identifier)))
+    (identifier))
+  (string)
+  (array
+    (identifier)
+    (integer)
+    (string)))
 
 ===============
 infix operators

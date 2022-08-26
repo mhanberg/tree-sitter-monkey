@@ -13,12 +13,16 @@ module.exports = grammar({
     alternative: $ => seq("else", "{", repeat($._statement), "}"),
     identifier: $ => /[a-zA-Z]+[a-zA-Z0-9]*/,
     call: $ => seq($.identifier, $.argument_list),
+    array: $ => seq("[", repeat(choice(seq($._expression, optional(",")), $._expression)), "]"),
+    string: $ => seq('"', /[^"]*/, '"'),
     function: $ => seq("fn", $.parameter_list, $.function_body),
     function_body: $ => seq("{", repeat($._statement), "}"),
-    parameter_list: $ => seq("(", repeat(seq($.identifier, optional(","))), ")"),
-    argument_list: $ => seq("(", repeat(seq($._expression, optional(","))), ")"),
+    parameter_list: $ => seq("(", repeat(choice(seq($.identifier, optional(",")), $.identifier)), ")"),
+    argument_list: $ => seq("(", repeat(choice(seq($._expression, optional(",")), $._expression)), ")"),
     _expression: $ => prec.left(choice(
       $.call,
+      $.array,
+      $.string,
       $.function,
       $.boolean,
       $.binary_operator,
@@ -32,4 +36,3 @@ module.exports = grammar({
     integer: $ => /\d+/
   }
 });
-
